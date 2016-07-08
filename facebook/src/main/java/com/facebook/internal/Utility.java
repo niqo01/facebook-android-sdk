@@ -47,7 +47,6 @@ import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
-import com.facebook.appevents.AppEventsConstants;
 import com.facebook.appevents.internal.Constants;
 
 import org.json.JSONArray;

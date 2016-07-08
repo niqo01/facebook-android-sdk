@@ -41,7 +41,6 @@ import com.facebook.Profile;
 import com.facebook.internal.CallbackManagerImpl;
 import com.facebook.internal.FragmentWrapper;
 import com.facebook.internal.Validate;
-import com.facebook.appevents.AppEventsConstants;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -477,20 +476,6 @@ public class LoginManager {
                     LoginLogger.EVENT_NAME_LOGIN_COMPLETE,
                     "Unexpected call to logCompleteLogin with null pendingAuthorizationRequest."
             );
-        } else {
-            HashMap<String, String> pendingLoggingExtras = new HashMap<>();
-            pendingLoggingExtras.put(
-                    LoginLogger.EVENT_EXTRAS_TRY_LOGIN_ACTIVITY,
-                    wasLoginActivityTried ?
-                            AppEventsConstants.EVENT_PARAM_VALUE_YES :
-                            AppEventsConstants.EVENT_PARAM_VALUE_NO
-            );
-            loginLogger.logCompleteLogin(
-                    request.getAuthId(),
-                    pendingLoggingExtras,
-                    result,
-                    resultExtras,
-                    exception);
         }
     }
 

@@ -27,7 +27,6 @@ import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import com.facebook.internal.BundleJSONConverter;
-import com.facebook.share.internal.ShareInternalUtility;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -265,75 +264,7 @@ public class AsyncRequestTests extends FacebookTestCase {
         waitAndAssertSuccess(1);
     }
 
-    @LargeTest
-    public void testBatchUploadPhoto() {
-        final AccessToken accessToken = getAccessTokenForSharedUserWithPermissions(null,
-                "user_photos", "publish_actions");
 
-        final int image1Size = 120;
-        final int image2Size = 150;
-
-        Bitmap bitmap1 = createTestBitmap(image1Size);
-        Bitmap bitmap2 = createTestBitmap(image2Size);
-
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "width");
-
-        GraphRequest uploadRequest1 = GraphRequest.newUploadPhotoRequest(
-                accessToken,
-                ShareInternalUtility.MY_PHOTOS,
-                bitmap1,
-                null,
-                null,
-                null);
-        uploadRequest1.setBatchEntryName("uploadRequest1");
-        GraphRequest uploadRequest2 = GraphRequest.newUploadPhotoRequest(
-                accessToken,
-                ShareInternalUtility.MY_PHOTOS,
-                bitmap2,
-                null,
-                null,
-                null);
-        uploadRequest2.setBatchEntryName("uploadRequest2");
-        GraphRequest getRequest1 = new GraphRequest(
-                accessToken,
-                "{result=uploadRequest1:$.id}",
-                parameters,
-                null,
-                new ExpectSuccessCallback() {
-                    @Override
-                    protected void performAsserts(GraphResponse response) {
-                        assertNotNull(response);
-                        JSONObject retrievedPhoto = response.getJSONObject();
-                        assertNotNull(retrievedPhoto);
-                        assertEquals(image1Size, retrievedPhoto.optInt("width"));
-                    }
-                });
-        GraphRequest getRequest2 = new GraphRequest(
-                accessToken,
-                "{result=uploadRequest2:$.id}",
-                parameters,
-                null,
-                new ExpectSuccessCallback() {
-                    @Override
-                    protected void performAsserts(GraphResponse response) {
-                        assertNotNull(response);
-                        JSONObject retrievedPhoto = response.getJSONObject();
-                        assertNotNull(retrievedPhoto);
-                        assertEquals(image2Size, retrievedPhoto.optInt("width"));
-                    }
-                });
-
-        TestGraphRequestAsyncTask task = new TestGraphRequestAsyncTask(
-                uploadRequest1,
-                uploadRequest2,
-                getRequest1,
-                getRequest2);
-        task.executeOnBlockerThread();
-
-        // Wait on 3 signals: getRequest1, getRequest2, and task will all signal.
-        waitAndAssertSuccess(3);
-    }
 
     @MediumTest
     @LargeTest

@@ -27,8 +27,6 @@ import android.os.Handler;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.facebook.applinks.FacebookAppLinkResolver;
-
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
