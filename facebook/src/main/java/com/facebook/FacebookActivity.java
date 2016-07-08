@@ -34,9 +34,6 @@ import com.facebook.internal.NativeProtocol;
 import com.facebook.internal.Utility;
 import com.facebook.login.LoginFragment;
 import com.facebook.login.LoginManager;
-import com.facebook.share.DeviceShareDialog;
-import com.facebook.share.internal.DeviceShareDialogFragment;
-import com.facebook.share.model.ShareContent;
 
 /**
  * This Activity is a necessary part of the overall Facebook SDK,
@@ -98,12 +95,6 @@ public class FacebookActivity extends FragmentActivity {
                 dialogFragment.setRetainInstance(true);
                 dialogFragment.show(manager, FRAGMENT_TAG);
 
-                fragment = dialogFragment;
-            } else if (DeviceShareDialogFragment.TAG.equals(intent.getAction())) {
-                DeviceShareDialogFragment dialogFragment = new DeviceShareDialogFragment();
-                dialogFragment.setRetainInstance(true);
-                dialogFragment.setShareContent((ShareContent) intent.getParcelableExtra("content"));
-                dialogFragment.show(manager, FRAGMENT_TAG);
                 fragment = dialogFragment;
             } else {
                 fragment = new LoginFragment();

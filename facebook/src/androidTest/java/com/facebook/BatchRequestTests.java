@@ -24,8 +24,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.facebook.share.internal.ShareInternalUtility;
-
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -291,65 +289,6 @@ public class BatchRequestTests extends FacebookTestCase {
                 assertNull(response.getJSONObject());
             }
         }
-    }
-
-    @LargeTest
-    public void testBatchUploadPhoto() {
-        final AccessToken accessToken = getAccessTokenForSharedUserWithPermissions(null,
-                "user_photos", "publish_actions");
-
-        final int image1Size = 120;
-        final int image2Size = 150;
-
-        Bitmap bitmap1 = createTestBitmap(image1Size);
-        Bitmap bitmap2 = createTestBitmap(image2Size);
-
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "width");
-
-        GraphRequest uploadRequest1 = GraphRequest.newUploadPhotoRequest(
-                accessToken,
-                ShareInternalUtility.MY_PHOTOS,
-                bitmap1,
-                null,
-                null,
-                null);
-        uploadRequest1.setBatchEntryName("uploadRequest1");
-        GraphRequest uploadRequest2 = GraphRequest.newUploadPhotoRequest(
-                accessToken,
-                ShareInternalUtility.MY_PHOTOS,
-                bitmap2,
-                null,
-                null,
-                null);
-        uploadRequest2.setBatchEntryName("uploadRequest2");
-        GraphRequest getRequest1 = new GraphRequest(
-                accessToken,
-                "{result=uploadRequest1:$.id}",
-                parameters,
-                null);
-        GraphRequest getRequest2 = new GraphRequest(
-                accessToken,
-                "{result=uploadRequest2:$.id}",
-                parameters,
-                null);
-
-        List<GraphResponse> responses = GraphRequest.executeBatchAndWait(
-                uploadRequest1,
-                uploadRequest2,
-                getRequest1,
-                getRequest2);
-        assertNotNull(responses);
-        assertEquals(4, responses.size());
-        assertNoErrors(responses);
-
-        JSONObject retrievedPhoto1 = responses.get(2).getJSONObject();
-        JSONObject retrievedPhoto2 = responses.get(3).getJSONObject();
-        assertNotNull(retrievedPhoto1);
-        assertNotNull(retrievedPhoto2);
-
-        assertEquals(image1Size, retrievedPhoto1.optInt("width"));
-        assertEquals(image2Size, retrievedPhoto2.optInt("width"));
     }
 
     @LargeTest

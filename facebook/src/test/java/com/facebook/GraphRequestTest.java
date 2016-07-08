@@ -27,7 +27,6 @@ import android.os.Bundle;
 
 import com.facebook.internal.GraphUtil;
 import com.facebook.internal.ServerProtocol;
-import com.facebook.share.internal.ShareInternalUtility;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -85,27 +84,6 @@ public class GraphRequestTest extends FacebookPowerMockTestCase {
         assertEquals("me/friends", request.getGraphPath());
     }
 
-    @Test
-    public void testCreateUploadPhotoRequest() {
-        Bitmap image = Bitmap.createBitmap(128, 128, Bitmap.Config.ALPHA_8);
-
-        GraphRequest request =
-                GraphRequest.newUploadPhotoRequest(
-                        null,
-                        ShareInternalUtility.MY_PHOTOS,
-                        image,
-                        null,
-                        null,
-                        null);
-        assertTrue(request != null);
-
-        Bundle parameters = request.getParameters();
-        assertTrue(parameters != null);
-
-        assertTrue(parameters.containsKey("picture"));
-        assertEquals(image, parameters.getParcelable("picture"));
-        assertEquals("me/photos", request.getGraphPath());
-    }
 
     @Test
     public void testCreatePlacesSearchRequestWithLocation() {
